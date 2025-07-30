@@ -18,11 +18,12 @@ if [[ -z "$vm_name" ]]; then
     exit 1
 fi
 
- virsh snapshot-list "$vm_name" | grep -iEv '\--|Name|^$' | awk '{ print $1 }' \
-| while IFS= read -r snap_name
+proc() { virsh snapshot-list "$vm_name" | grep -iEv '\--|Name|^$' | awk '{ print $1 }' ; }
+
+while IFS= read -r snap_name
 do
-    sudo virsh snapshot-delete "$vm_name" "$snap_name" || error
-done
+    sudo virsh snapshot-delete "$vm_name" "$snap_name"
+done < <(proc)
 
 read -rep "Would you like to remove the host? (y|n) " ans
 
