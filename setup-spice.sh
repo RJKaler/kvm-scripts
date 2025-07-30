@@ -22,10 +22,10 @@ else
     exit 1
 fi
 
-read -rp "A reboot is required for spice to take effect.
-Reboot now? yes or no: " ans
+read -rep "A reboot is required for spice to take effect.
+Reboot now? (y|n): " ans
 
-if [[ "$ans" == "yes" ]]; then
+if [[ "$ans" =~ ^(yes|y|Y|Yes)$ ]]; then
     sudo shutdown -r now
 else
     echo "OK - exiting script"
